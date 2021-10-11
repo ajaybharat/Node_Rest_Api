@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
-const PORT = 4000;
 const userRoutes = require('./controller');
 const postsRoutes = require('./controller/posts');
 const cors = require('cors');
 require("./db");
+require("dotenv").config();
 
 
 
@@ -14,7 +14,7 @@ app.use('/api/posts',postsRoutes);
 app.use('/api/users',userRoutes);
 
 
-app.listen(PORT, function () {
-    console.log(`server is running ${PORT}`);
+app.listen(process.env.PORT, function () {
+    console.log(`server is running`);
 });
 
