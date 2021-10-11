@@ -1,55 +1,72 @@
 const express = require("express");
 const { Router } = require("express");
 const router = Router();
-const names = require('./../model/index');
+const UserModell = require('./../model/index');
 
-router.get('/', function (req, res) {
-    res.json({message: "Hey its a success"});
+router.get('/', async function (req, res) {
+    try {
+        const users = await UserModell.find();
+        res.json(users);
+    }
+    catch(err) {
+        res.json({message: err});
+    }
 })
 
-router.get('/name', function(req, res) {
-    res.json({name_lst: names});
+
+
+
+router.post('/', (req, res) => {
+    const user = new UserModell({
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email
+    });
+    user.save()
+    .then(data => {
+        res.json(data);
+    })
+    .catch(err => {
+        res.json({message: err});
+    })
+})
+
+//get specific posts
+router.get('/:userId',async (req, res) => {
+    try {
+        console.log(req.params.userId);
+        const user = await UserModell.findById(req.params.userId);
+        res.json(user);
+    }
+    catch(err) {
+        res.json({message: err});
+    }
 });
 
-router.post('/name', function(req, res) {
-    const name = req.body.name;
-    names.push(name);
-    res.json({
-        message: 'Added successfully',
-        names_list: names
-    });
-})
+//delete a post
+router.delete('/:userId',async (req, res) => {
+    try {
+        const removeUser = await UserModell.remove({_id: req.params.userId});
+        res.json(removeUser);
+    }
+    catch(err) {
+        res.json({message: err});
+    }
+});
 
-router.put('/name', function(req, res) {
-    const name = req.body.name;
-    const new_names = names.map((each_name) => {
-        if(each_name === "ajay") {
-            return each_name + name;
-        }
-        else {
-            return each_name;
-        }
-    })
-    res.json({
-        message: 'updated successfully',
-        names_list: new_names
-    });
-})
-
-router.delete('/name', function(req, res) {
-    const name = req.body.name;
-    const new_names = names.filter((each_name) => {
-        if(each_name !== name) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    })
-    res.json({
-        message: 'Deleted successfully',
-        names_list: new_names
-    });
-})
+//update a post
+router.patch('/:userId',async (req, res) => {
+    try {
+        const updateUser = await UserModell.updateOne(
+            {_id: req.params.userId}, 
+            {$set: {
+                name: req.body.name
+            }});
+        res.json(updateUser);
+    }
+    catch(err) {
+        res.json({message: err});
+    }
+});
 
 module.exports = router;

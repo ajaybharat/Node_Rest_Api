@@ -1,3 +1,22 @@
-names = ['ajay', 'bharat', 'teja', 'satya', 'aditya'];
+const mongoose = require("mongoose");
 
-module.exports = names;
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
+    name: {
+        type:String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    }
+});
+
+const UserModel = mongoose.model("UserModel", UserSchema);
+
+module.exports = UserModel;
