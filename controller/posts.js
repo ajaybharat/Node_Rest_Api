@@ -2,6 +2,7 @@ const express = require("express");
 const { Router } = require("express");
 const router = Router();
 const postModel = require('./../model/posts');
+const UserModel = require('./../model/index');
 
 //get all posts
 router.get('/',async (req, res) => {
@@ -16,19 +17,21 @@ router.get('/',async (req, res) => {
 
 
 
-router.post('/', (req, res) => {
+router.post('/:userID', async (req, res) => {
     const post = new postModel({
         title: req.body.title,
         description: req.body.description
     });
-    post.save()
-    .then(data => {
-        res.json(data);
-    })
-    .catch(err => {
-        res.json({message: err});
-    })
+    const user = await UserModel.findById(req.params.userID);
+    post.owner = user;
+    await post.save();
+    user.posts.push(post);
+    await user.save();
+    res.status(201).json(post);
+    
 })
+
+
 
 //get specific posts
 router.get('/:postId',async (req, res) => {

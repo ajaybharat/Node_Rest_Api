@@ -13,7 +13,16 @@ router.get('/', async function (req, res) {
     }
 })
 
-
+//get all user posts
+router.get('/:userID/posts',async (req, res) => {
+    try {
+        const Userposts = await UserModell.findById(req.params.userID);
+        res.json(Userposts.posts);
+    }
+    catch(err) {
+        res.json({message: err});
+    }
+});
 
 
 router.post('/', (req, res) => {
