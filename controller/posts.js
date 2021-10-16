@@ -17,6 +17,7 @@ router.get('/',async (req, res) => {
 
 
 
+// create post with userID
 router.post('/:userID', async (req, res) => {
     const post = new postModel({
         title: req.body.title,
@@ -68,6 +69,43 @@ router.patch('/:postId',async (req, res) => {
     }
     catch(err) {
         res.json({message: err});
+    }
+});
+
+//like & unlike a post
+
+router.put("/:id/likeUnlike", async (req,res) => {
+    try {
+        const post = await postModel.findById(req.params.id);
+        if(!post.likes.includes(req.body.userid)) {
+            await post.updateOne({ $push: { likes: req.body.userid } });
+            res.status(200).json("The post is liked");
+        }
+        else {
+            await post.updateOne({ $pull: { likes: req.body.userid } });
+            res.status(200).json("The post is disliked");
+        }
+    }
+    catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+//get timeline posts
+
+router.get("/timeline/all", async (req,res) => {
+    try {
+        const currentUser = await UserModel.findById(req.body.userid);
+        const userposts = await postModel.find({owner:req.body.userid});
+        const friendPosts = await Promise.all(
+            currentUser.followins.map(friend => {
+                return postModel.find({owner:friend});
+            })
+        )
+        res.json(userposts.concat(...friendPosts));
+    }
+    catch (err) {
+        res.status(500).json(err);
     }
 });
 
