@@ -32,13 +32,13 @@ Social media API built using nodejs, mongodb
 1. Get all users: https://node-rest-api7.herokuapp.com/api/users
 2. Get all posts for specified user: https://node-rest-api7.herokuapp.com/api/users/616af5f59c52b25b54550701/posts
 3. Patch/Delete/Get Specified User: https://node-rest-api7.herokuapp.com/api/users/616af5f59c52b25b54550701
-4. Follow user: https://node-rest-api7.herokuapp.com/api/users/616af5f59c52b25b54550701 ( body: userid )
-5. unfollow user: https://node-rest-api7.herokuapp.com/api/users/616af5f59c52b25b54550701 ( body: userid )
+4. Follow user: https://node-rest-api7.herokuapp.com/api/users/616af5f59c52b25b54550701/follow ( body: userid )
+5. unfollow user: https://node-rest-api7.herokuapp.com/api/users/616af5f59c52b25b54550701/unfollow ( body: userid )
 
 #Posts:
 
 1. Get all posts: https://node-rest-api7.herokuapp.com/api/posts
-2. Post the posts: https://node-rest-api7.herokuapp.com/api/posts
+2. Post the posts with userid : https://node-rest-api7.herokuapp.com/api/posts/616af5f59c52b25b54550701
 3. Patch/Delete/Get specified Post: https://node-rest-api7.herokuapp.com/api/posts/616af65f9c52b25b54550706
 4. Like and dislike post: https://node-rest-api7.herokuapp.com/api/posts/616af65f9c52b25b54550706/likeUnlike **(body: { "userid": "616af5f59c52b25b54550701" } )**
 5. Get all timeline posts: https://node-rest-api7.herokuapp.com/api/posts/timeline/all **(body: { "userid": "616af5f59c52b25b54550701" } )**
