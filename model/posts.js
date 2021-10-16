@@ -11,16 +11,20 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
+    img: {
+        type: String
+    },
+    likes: {
+        type: Array,
+        default: []
     },
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'index',
         required: true
     }
-});
+},
+{ timestamps: true });
 
 const PostModel = mongoose.model("PostModel", PostSchema);
 

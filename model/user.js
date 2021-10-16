@@ -9,17 +9,38 @@ const UserSchema = new Schema({
     },
     phone: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
+    },
+    passWord: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    profilePic: {
+        type: String,
+        default: "",
+    },
+    followers: {
+        type: Array,
+        default: []
+    },
+    followins: {
+        type: Array,
+        default: []
     },
     posts: [{
         type: Schema.Types.ObjectId,
         ref: 'posts'
     }]
-});
+},
+{ timestamps: true }
+);
 
 const UserModel = mongoose.model("UserModel", UserSchema);
 
